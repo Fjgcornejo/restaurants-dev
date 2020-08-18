@@ -1,0 +1,58 @@
+server: 
+   port: 30010   
+   tomcat:
+      access_log_enabled: true
+      basedir: target/tomcat
+   servlet:
+      contextPath: /restaurants   
+spring:
+  thymeleaf: ## Thymeleaf Config
+      cache: false  
+  main.allow-bean-definition-overriding: true
+  application.name: microservice
+  boot.admin: #Spring Boot Admin Config    
+      client.url: http://localhost:18100/monitoring
+      client.username: operations
+      client.password: changeIt2019!
+      client.metadata.user.name: ${spring.boot.admin.username}
+      client.metadata.user.password: ${spring.boot.admin.password}
+      client.service-url: http://localhost:30010/microservice
+
+management.endpoints.web.exposure.include: "*"
+management.endpoint.health.show-details: always  
+
+onesaitplatform:
+  iotclient:
+    urlRestIoTBroker: https://development.onesaitplatform.com/iot-broker
+    sslverify: true
+    token: a16b9e7367734f04bc720e981fcf483f
+    deviceTemplate: DeviceMaster
+    device: microservice
+    connectTimeoutInSec: 10
+    writeTimeoutInSec: 30
+    readTimeoutInSec: 30
+
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: GovConsole
+      clientSecret: onesaitplatform
+      accessTokenUri: https://localhost:21000/oauth-server/oauth/token
+      userAuthorizationUri: https://localhost:21000/oauth-server/oauth/authorize
+      checkTokenEndpointUrl: https://localhost:21000/oauth-server/oauth/check_token
+      useCurrentUri: true
+    resource:
+      userInfoUri: https://localhost:21000/oauth-server/user
+
+
+    ## LOGGING CONF
+logging:
+   path: /tmp/logs 
+   file: ${spring.application.name}
+   level:
+      com.minsait: DEBUG 
+      #org.springframework.security: DEBUG
+
